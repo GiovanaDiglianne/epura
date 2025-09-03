@@ -1,0 +1,16 @@
+const matoGrossoBounds =
+[ [-56.75, -15.9], [-56.85, -15.23] ];
+
+ minZoom: 12,
+
+ const tipoLegenda = {
+   "APP": "Área de Proteção Ambiental",
+   "ELNC": "Espaço Livre Não Configurado",
+   "EST": "Estacionamento",
+   "GNP": "Gleba Não Parcelada",
+   "LNE": "Não Edificado",
+   "SEL": "Sistema de Espaço Livre",
+   "SUB": "Subutilizado"
+ };
+
+<button onclick="zoomMapa([-55.95,-15.64],15)">Pedra 90</button>
