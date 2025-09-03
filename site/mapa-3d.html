@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa 3D Avançado</title>
+<link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet"/>
+<script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+<style>
+  html, body { margin:0; padding:0; height:100%; font-family: Arial, sans-serif; }
+  #map { position:absolute; top:0; left:0; width:100%; height:100%; }
+
+  /* Sidebar flutuante */
+  #sidebar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 240px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 10;
+  }
+  #sidebar h3 { margin-top:0; font-size:16px; }
+  #sidebar .collapsible {
+    cursor:pointer;
+    background:#eee;
+    padding:5px 8px;
+    margin-bottom:5px;
+    border-radius:4px;
+    font-weight:bold;
+  }
+  #sidebar .content { display:none; padding-left:10px; }
+  #sidebar label { display:block; margin-bottom:3px; }
+  #sidebar button { margin:5px 0; padding:5px 8px; cursor:pointer; width:100%; border:none; border-radius:4px; background:#1f2937; color:white; }
+  #info { margin-top:10px; font-size:13px; color:#333; word-break: break-word; padding:5px; background:#f5f5f5; border-radius:4px; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="sidebar">
+  <h3>Filtros</h3>
+  <div class="collapsible">Tipos de Lote</div>
+  <div class="content" id="filtro-container"></div>
+
+  <h3>Zoom</h3>
+  <button onclick="zoomMapa([-56.1,-15.6],12)">Cuiabá</button>
+  <button onclick="zoomMapa([-55.95,-15.64],15)">Pedra 90</button>
+
+  <div id="info">Clique em um lote para ver detalhes</div>
+</div>
+
+<script>
+const apiKey = 'ok7ZFsc8aNh6eVAKsDc3';
+const tipoLegenda = {
+  "APP": "Área de Proteção Ambiental",
+  "ELNC": "Espaço Livre Não Configurado",
+  "EST": "Estacionamento",
+  "GNP": "Gleba Não Parcelada",
+  "LNE": "Não Edificado",
+  "SEL": "Sistema de Espaço Livre",
+  "SUB": "Subutilizado"
+};
+
+const tipoKeys = Object.keys(tipoLegenda).sort(); // ordem alfabética
+
+const matoGrossoBounds =
+[ [-56.75, -15.9], [-56.85, -15.23] ];
+
+// Inicializa o mapa
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://api.maptiler.com/maps/0198f6a0-6eb4-727b-9907-9038979cc4e9/style.json?key='+apiKey,
+  center: [-56.1,-15.6],
+  zoom: 12,
+  pitch: 60,
+  bearing: 0,
+   minZoom: 12,
+  maxBounds: matoGrossoBounds
+});
+
+map.on('load', () => {
+  map.addSource('pedra90', { type:'geojson', data:'data/PEDRA90.geojson' });
+
+  map.addLayer({
+    id:'pedra90-layer',
+    type:'fill',
+    source:'pedra90',
+    paint:{
+      'fill-color': [
+        'match',['get','TIPO'],
+        'LNE','#000000',
+        'SUB','#ff7700',
+        'SEL','#00ff23',
+        'APP','#a47158',
+        'EST','#e8718d',
+        'GNP','#6053b7',
+        'ELNC','#00660e',
+        '#cccccc'
+      ],
+      'fill-opacity':0.5
+    }
+  });
+
+  map.addLayer({
+    id:'pedra90-outline',
+    type:'line',
+    source:'pedra90',
+    paint:{'line-color':'#000','line-width':0.8}
+  });
+
+  // clique no lote
+  map.on('click','pedra90-layer', e => {
+    const props = e.features[0].properties;
+    let html = '';
+    if(props.TIPO) html += `<b>Tipo:</b> ${tipoLegenda[props.TIPO] || props.TIPO}<br>`;
+    if(props.inscricao) html += `<b>Inscrição:</b> ${props.inscricao}<br>`;
+    if(props.AREA) html += `<b>Área:</b> ${props.AREA} m²`;
+    document.getElementById('info').innerHTML = html || 'Sem informações';
+  });
+  map.on('mouseenter','pedra90-layer', ()=> map.getCanvas().style.cursor='pointer');
+  map.on('mouseleave','pedra90-layer', ()=> map.getCanvas().style.cursor='');
+});
+
+// monta checkboxes de filtro
+const container = document.getElementById('filtro-container');
+tipoKeys.forEach(k=>{
+  const label = document.createElement('label');
+  label.innerHTML = `<input type="checkbox" class="filtro" value="${k}" checked> ${tipoLegenda[k]}`;
+  container.appendChild(label);
+});
+
+// collapsible
+const coll = document.querySelector('.collapsible');
+coll.addEventListener('click', ()=>{
+  const content = document.querySelector('.content');
+  content.style.display = content.style.display==='block'?'none':'block';
+});
+
+// filtros
+document.querySelectorAll('.filtro').forEach(cb=>{
+  cb.addEventListener('change', ()=>{
+    const ativos = [...document.querySelectorAll('.filtro:checked')].map(c=>c.value);
+
+    if(ativos.length === 0){
+      // Nenhum selecionado → esconde o layer
+      map.setLayoutProperty('pedra90-layer', 'visibility', 'none');
+      map.setLayoutProperty('pedra90-outline', 'visibility', 'none');
+    } else {
+      // Pelo menos um ativo → mostra e aplica filtro
+      map.setLayoutProperty('pedra90-layer', 'visibility', 'visible');
+      map.setLayoutProperty('pedra90-outline', 'visibility', 'visible');
+      map.setFilter('pedra90-layer', ['in', ['get','TIPO'], ...ativos]);
+    }
+  });
+});
+
+
+
+// função zoom
+function zoomMapa(center, zoom){
+  map.flyTo({center, zoom});
+}
+</script>
+
+</body>
+</html>
