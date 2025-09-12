@@ -28,6 +28,7 @@ const map = new maplibregl.Map({
 
 //carregamento mapa 
 map.on('load', () => {
+  //PEDRA 90
   map.addSource('pedra90', { 
     type:'geojson', 
     data:'data/PEDRA90.geojson' 
@@ -75,13 +76,63 @@ map.on('load', () => {
   // cursor pointer 
   map.on('mouseenter','pedra90-layer', ()=> map.getCanvas().style.cursor='pointer');
   map.on('mouseleave','pedra90-layer', ()=> map.getCanvas().style.cursor='');
+
+  //COXIPÓ (SEM FILTRO, pois não há tipos)
+  map.addSource('coxipo', { 
+    type:'geojson', 
+    data:'data/COXIPO_WGS84.geojson' 
+  });
+
+  //layer de lotes
+  map.addLayer({
+    id:'coxipo-layer',
+    type:'fill',
+    source:'coxipo',
+    paint:{
+      'fill-color': [
+        'match',['get','TIPO'], //funciona com switch case
+        'LNE','#000000',
+        'SUB','#ff7700',
+        'SEL','#00ff23',
+        'APP','#a47158',
+        'EST','#e8718d',
+        'GNP','#6053b7',
+        'ELNC','#00660e',
+        '#cccccc' //cor padrão
+      ],
+      'fill-opacity':0.5
+    }
+  });
+
+  // contorno dos lotes
+  map.addLayer({
+    id:'coxipo-outline',
+    type:'line',
+    source:'coxipo',
+    paint:{'line-color':'#000','line-width':0.8}
+  });
+
+  // clique no lote
+  map.on('click','coxipo-layer', e => {
+    const props = e.features[0].properties;
+    let html = '';
+    if(props.TIPO) html += `<b>Tipo:</b> ${tipoLegenda[props.TIPO] || props.TIPO}<br>`;
+    if(props.inscricao) html += `<b>Inscrição:</b> ${props.inscricao}<br>`;
+    if(props.AREA) html += `<b>Área:</b> ${props.AREA} m²`;
+    document.getElementById('info').innerHTML = html || 'Sem informações';
+  });
+
+  // cursor pointer 
+  map.on('mouseenter','coxipo-layer', ()=> map.getCanvas().style.cursor='pointer');
+  map.on('mouseleave','coxipo-layer', ()=> map.getCanvas().style.cursor='');  
 });
 
 // monta checkboxes de filtro
 const container = document.getElementById('filtro-container');
 tipoKeys.forEach(k=>{
   const label = document.createElement('label');
-  label.innerHTML = `<input type="checkbox" class="filtro" value="${k}" checked> ${tipoLegenda[k]}`;
+  label.innerHTML = `<input type="checkbox" class="filtro" value="${k}" checked>
+   ${tipoLegenda[k]}`;
   container.appendChild(label);
 });
 
