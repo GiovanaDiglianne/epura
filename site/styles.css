@@ -1,88 +1,464 @@
-html, body { 
-    margin:0; 
-    padding:0; 
-    height:100%; 
-    font-family: Arial, sans-serif; 
+/* Reset / base */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Tahoma, sans-serif;
 }
 
-#map { 
-    position:absolute; 
-    top:0; 
-    left:0; 
-    width:100%; 
-    height:100%; 
+/* mapa ocupa toda a viewport */
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
-/* Sidebar flutuante */
+/* Sidebar geral */
+:root {
+  --sidebar-width: 151px;
+}
 #sidebar {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 240px;
-    background: #efbd43;
-    border-radius: 10px;
-    padding: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 10;
+  position: absolute;
+  z-index: 30;
+  display: flex;
+  height: 100vh;
+  width: var(--sidebar-width);
+  flex-direction: column;
+  overflow-y: hidden;
+  padding: 1.125rem .75rem;
+  align-items: flex-start;
+  box-sizing: border-box;
+  background: transparent;
+  /* entrada animada (JS adiciona .visible) */
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+#sidebar.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-#sidebar h3 { 
-    margin-top:0; 
-    height:5px;
-    font-size:16px; 
-    padding-bottom: 0;
-    color: #490108;
+/* fundo que vai atrás das opções da barra lateral */
+#sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #F7F4F1;
+  border-radius: 6px;
+  z-index: -1;
 }
 
-#sidebar #zoom{
-    margin-top:17px;
+/* logo do epura */
+#logo {
+  width: 40px;
+  height: auto;
+  display: block;
+  margin: 0 auto 0.75rem;
 }
 
+/* agrupamento logo + ícone (stack vertical) */
+.brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
+/* ícone + label (sidebar) */
+.icon-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza horizontalmente o ícone e o rótulo */
+  justify-content: center; /* centraliza verticalmente dentro do espaço do botão */
+  gap: 6px;
+  padding: 6px;
+  cursor: pointer;
+  width: 100%; /* garante que o conteúdo ocupe a largura da sidebar para centralizar corretamente */
+  box-sizing: border-box;
+
+  /* visual feedback */
+  border-radius: 8px;
+  transition: background-color 160ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+/* hover / foco */
+.icon-stack:hover,
+.icon-stack:focus-visible {
+  background-color: rgba(0,0,0,0.04); /* caixinha cinza clara ao passar o mouse */
+  outline: none;
+  box-shadow: none;
+}
+
+/* estado ativo (quando o botão tem aria-expanded=true ou classe .open/.active) */
+.icon-stack[aria-expanded="true"],
+.icon-stack.open,
+.icon-stack.active {
+  background-color: rgba(0,0,0,0.06); /* leve destaque quando ativo */
+}
+
+/* pequena resposta ao clique */
+.icon-stack:active {
+  transform: translateY(1px);
+}
+.icon-stack .icon {
+  width: 32px; /* ajuste o tamanho conforme necessário */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.icon-label {
+  font-size: 0.78rem;
+  color: #490108;
+  line-height: 1;
+  text-align: center; /* centraliza o texto abaixo do ícone */
+  display: block;
+  width: 100%;
+}
+
+#artigos-btn {
+  margin-right: -1px;
+}
+
+/* botões / listagem dentro da sidebar */
+#sidebar h3 {
+  margin-top: 0;
+  font-size: 14px;
+  color: #490108;
+  margin: 0 auto 0.75rem;
+}
+
+/* botões de zoom */
+#sidebar button {
+  margin: 5px 0;
+  padding: 5px 8px;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  background: #490108;
+  color: white;
+}
+
+/* collapsible básico (sidebar) */
 #sidebar .collapsible {
-    cursor:pointer;
-    background:#f5f5f5;
-    color:#490108;
-    padding:5px 8px;
-    margin-bottom:5px;
-    border-radius:4px;
-    font-weight:bold;
+  cursor: pointer;
+  color: #490108;
+  padding: 5px 8px;
+  margin: 0 auto 0.75rem;
+  border-radius: 4px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: transparent;
 }
 
-#sidebar .content { 
-    display:none;
-    margin-top:5px;
-    padding-left:10px; 
+#sidebar .content {
+  display: none;
+  margin-top: 5px;
+  padding-left: 10px;
+  width: 100%;
 }
 
+#sidebar .collapsible.open {
+  background: rgba(73,1,8,0.06);
+}
+#sidebar .collapsible.open + .content {
+  display: block;
+}
+
+/* area de filtros dentro da sidebar (se usada) */
 #sidebar #filtro-container {
-    color: #490108;
-    overflow-y: auto;
+  color: #490108;
+  overflow-y: auto;
 }
 
-#sidebar label { 
-    display:block; 
-    margin-bottom:3px; 
-    accent-color: #490108;
+/* labels dentro da sidebar */
+#sidebar label {
+  display: block;
+  margin-bottom: 3px;
+  accent-color: #490108;
 }
 
-#sidebar button { 
-    margin:3px 0; 
-    padding:5px 8px; 
-    font-size: 17px; 
-    cursor:pointer; 
-    width:100%; 
-    border:none; 
-    border-radius:4px; 
-    background:#490108;
-    color:#f5f5f5; 
+/* info box */
+#info {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #490108;
+  word-break: break-word;
+  padding: 5px;
+  background: #f5f5f5;
+  border-radius: 4px;
 }
 
-#info { 
-    margin-top:10px; 
-    font-size: 15px; 
-    color:#490108; 
-    word-break: break-word; 
-    padding:5px; 
-    background:#f5f5f5; 
-    border-radius:4px; 
+/* POPUP SIDEBAR (lado direito da sidebar original) */
+/* usa a classe .popup-sidebar para combinar com HTML */
+.popup-sidebar {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 320px;
+  max-width: 90%;
+  background: #fff;
+  box-shadow: -12px 0 30px rgba(0,0,0,0.15);
+  z-index: 70;
+  transform: translateX(100%);
+  transition: transform 240ms ease, opacity 200ms ease;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  border-left: 1px solid rgba(0,0,0,0.05);
+  left: auto; /* posicionamento definido via JS */
+  box-sizing: border-box;
+}
+
+/* inicialmente escondido (comportamento visual) */
+.popup-sidebar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 240ms ease, opacity 200ms ease, visibility 0s linear 240ms;
+}
+.popup-sidebar.open {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* close button (aceita id ou classe) */
+#popup-close, .popup-close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.25rem;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+/* popup header */
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+.popup-icon { width: 28px; height: auto; }
+
+/* popup filters container (common) */
+#filtro-container, .popup-content-inner {
+  color: #490108;
+  overflow-y: auto;
+  padding-top: 0.5rem;
+}
+
+/* hidden utility */
+.hidden { display: none; }
+
+/* popup collapsible (inside popup) */
+.popup-collapsible {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: .4rem .5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+.vazios-icon {
+  width: 50px;
+  height: auto;
+  display: inline-block;
+}
+
+/* conteúdo do colapsível (dentro do popup) */
+.popup-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+  padding-left: .25rem;
+  display: none; /* JS alterna para block quando abrir */
+}
+.popup-collapsible.open + .popup-content {
+  display: block;
+  max-height: 400px;
+}
+
+/* filtros labels e inputs */
+.popup-content .filtro-label {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .25rem 0;
+  color: #333;
+}
+.popup-content .filtro {
+  width: 16px;
+  height: 16px;
+}
+
+/* util: collapsible style used in both places */
+.collapsible, .popup-collapsible {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ensure popup content formatting */
+.popup-content .filtro-label span { color: #490108; }
+
+/* debug helper (only if needed) */
+/* #sidebar { opacity: 1 !important; transform: none !important; visibility: visible !important; } */
+
+/* fim do ficheiro */
+
+/* ...existing code... */
+
+/* CACHE BREAK v2.0.1 - Layout horizontal implementado 2025-09-12 02:04 */
+/* Estilos gerais para todos os popups do MapLibre */
+.maplibregl-popup .maplibregl-popup-content,
+.mapboxgl-popup .mapboxgl-popup-content {
+  max-width: 250px;
+  min-width: 200px;
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Estilos específicos para popups do Ribeirão */
+.maplibregl-popup.ribeirao-popup .maplibregl-popup-content,
+.mapboxgl-popup.ribeirao-popup .mapboxgl-popup-content {
+  width: 250px;
+  max-width: 250px;
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Estilos específicos para popups do Contorno */
+.maplibregl-popup.contorno-popup .maplibregl-popup-content,
+.mapboxgl-popup.contorno-popup .mapboxgl-popup-content {
+  width: 250px;
+  max-width: 250px;
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Estilos para o conteúdo interno de todos os popups */
+.ribeirao-popup-content,
+.contorno-popup-content,
+.popup-generic-content {
+  width: 100%;
+  max-width: 250px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: #222;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  padding: 6px;
+}
+
+/* Layout horizontal: imagem à esquerda, conteúdo à direita */
+.popup-horizontal-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(255, 255, 0, 0.1); /* TESTE: fundo amarelo claro para verificar se carregou */
+  border: 1px solid red; /* TESTE: borda vermelha para verificar se carregou */
+}
+
+.popup-image-container {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.popup-text-container {
+  flex: 1;
+  min-width: 0; /* permite quebra de texto */
+}
+
+/* Imagens dentro dos popups */
+.popup-image-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Fallback para imagens não no novo layout */
+.ribeirao-popup-content img:not(.popup-image-container img),
+.contorno-popup-content img:not(.popup-image-container img),
+.popup-generic-content img:not(.popup-image-container img) {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Texto dentro dos popups */
+.ribeirao-popup-content div,
+.contorno-popup-content div,
+.popup-generic-content div {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Links dentro dos popups */
+.ribeirao-popup-content a,
+.contorno-popup-content a,
+.popup-generic-content a {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Responsividade dos popups em telas pequenas */
+@media (max-width: 480px) {
+  .maplibregl-popup .maplibregl-popup-content,
+  .mapboxgl-popup .mapboxgl-popup-content {
+    max-width: 220px;
+    min-width: 180px;
+  }
+  
+  .ribeirao-popup-content,
+  .contorno-popup-content,
+  .popup-generic-content {
+    padding: 4px;
+    font-size: 0.75rem;
+  }
+  
+  .popup-image-container {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .popup-horizontal-layout {
+    gap: 6px;
+  }
+}
+
+/* Garante que o texto sempre quebre apropriadamente */
+.maplibregl-popup-content *,
+.mapboxgl-popup-content * {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  max-width: 100%;
 }

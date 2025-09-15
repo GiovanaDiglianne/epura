@@ -1,37 +1,115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa 3D Avançado</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Epura Observatório</title>
   <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js">
-  </script>
+  <link rel="shortcut icon" type="image/png" href="design/LOGO.png" />
 </head>
 <body>
   <div id="map"></div>
-  <div id="sidebar">
-    <h3>Filtros</h3>
-    <div class="collapsible">
-      Tipos de Lote
+
+  <div id="sidebar" class="visible">
+    <div class="brand">
+      <img src="design/LOGO.png" alt="Observatório Epura" id="logo" />
     </div>
-    <div class="content" id="filtro-container">
+
+    <div class="icon-stack popup-trigger" id="pesquisas-btn" aria-expanded="false" title="Pesquisas" data-popup="#popup-pesquisas" data-popup-title="Eixos Temáticos">
+      <img src="design/pesquisas.svg" alt="Pesquisas" class="icon" />
+      <span class="icon-label">Pesquisas</span>
+    </div>
+
+    <div class="icon-stack popup-trigger" id="artigos-btn" aria-expanded="false" title="Artigos" data-popup="#popup-artigos" data-popup-title="Regiões Metropolitanas">
+      <img src="design/artigos.svg" alt="Artigos" class="icon" />
+      <span class="icon-label">Produções</span>
+    </div>
+
+    <div id="info">Clique em um lote para ver detalhes</div>
+
+    <div class="collapsible" role="button" aria-expanded="false" title="Categorização">
+      <img src="design/pesquisas.svg" alt="Categorização" id="collapsible-pesquisas" />
     </div>
     <h3 id="zoom">Zoom</h3>
-    <button onclick="zoomMapa([-56.1,-15.6],12)">
-      Cuiabá
-    </button>
-    <button onclick="zoomMapa([-55.95,-15.64],15)">
-      Pedra 90
-    </button>
-    <button onclick="zoomMapa([-56.059, -15.626],15)">
-      Coxipó
-    </button>
-    <div id="info">
-      Clique em um lote para ver detalhes
+    <button onclick="zoomMapa([-56.1,-15.6],12)">Cuiabá</button>
+  </div>
+
+  <!-- POPUP PESQUISAS (Eixos temáticos) -->
+  <aside id="popup-pesquisas" class="popup-sidebar hidden" aria-hidden="true" role="dialog" aria-label="Eixos temáticos">
+    <button class="popup-close" aria-label="Fechar filtros">&times;</button>
+    <div class="popup-header"><h2>Eixos temáticos</h2></div>
+
+    <div class="popup-collapsible" role="button" aria-expanded="false" data-target="#filtro-vazios-pesq">
+      <img src="design/vazios.png" alt="Vazios" class="vazios-icon" />
+      <span>Vazios</span>
+    </div>
+    <div class="popup-content" id="filtro-vazios-pesq">
+      <!-- filtros serão montados pelo scripts.js -->
+    </div>
+  </aside>
+
+  <!-- POPUP ARTIGOS (Regiões Metropolitanas) -->
+  <aside id="popup-artigos" class="popup-sidebar hidden" aria-hidden="true" role="dialog" aria-label="Regiões Metropolitanas">
+    <button class="popup-close" aria-label="Fechar filtros">&times;</button>
+    <div class="popup-header"><h2>Regiões Metropolitanas</h2></div>
+
+    <!-- Vale do Rio Cuiabá — COMO COLAPSÍVEL (Destaques dentro) -->
+    <div class="popup-collapsible" role="button" aria-expanded="false" data-target="#filtro-rmvrc-art">
+      <img src="design/RMVRC.svg" alt="Vale do Rio Cuiabá" class="vazios-icon" />
+      <strong>Vale do Rio Cuiabá</strong>
+    </div>
+    <div class="popup-content" id="filtro-rmvrc-art">
+      <div class="popup-collapsible" role="button" aria-expanded="false" data-target="#destaques-rmvrc">
+        <span>Destaques</span>
+      </div>
+      <div class="popup-content" id="destaques-rmvrc">
+        <!-- item de destaque com ícone e toggle para a camada do Ribeirão -->
+        <div class="destaque-item" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:.4rem .2rem;">
+          <img src="design/ribeirao.png" alt="Ícone Ribeirão" style="width:28px;height:auto;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input id="toggle-ribeirao" type="checkbox" checked>
+            <span>Corredor Ecológico - Ribeirão do Lipa</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="popup-collapsible" role="button" aria-expanded="false" data-target="#artigos-rmvrc">
+        <span>Artigos</span>
+      </div>
+      <div class="popup-content" id="artigos-rmvrc"></div>
+
+      <div class="popup-collapsible" role="button" aria-expanded="false" data-target="#tfgs-rmvrc">
+        <span>TFGS</span>
+      </div>
+      <div class="popup-content" id="tfgs-rmvrc"></div>
+
+      <div class="popup-collapsible" role="button" aria-expanded="false" data-target="#mestrados-rmvrc">
+        <span>Mestrados/Doutorados</span>
+      </div>
+      <div class="popup-content" id="mestrados-rmvrc"></div>
+    </div>
+  </aside>
+
+  <!-- POPUP VALE (opcional panel detalhado) -->
+  <div id="popup-vale" class="popup-sidebar hidden">
+    <div class="popup-header">
+      <h2>Vale do Rio Cuiabá</h2>
+      <button class="popup-close">×</button>
+    </div>
+
+    <div class="popup-collapsible" data-target="#destaques-list" aria-expanded="false" style="cursor:pointer;">
+      <span style="font-weight:bold;">Destaques</span>
+    </div>
+    <div id="destaques-list" class="popup-collapsible-content" style="display:none; padding-left:12px;">
+      <div class="destaque-item" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <img src="design/ribeirao.png" alt="Ícone Ribeirão" style="width:24px;height:24px;">
+        <span>Corredor Ecológico - Ribeirão do Lipa</span>
+      </div>
     </div>
   </div>
+
+  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
   <script src="scripts.js"></script>
 </body>
 </html>
