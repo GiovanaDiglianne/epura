@@ -6,17 +6,12 @@ import './MapContainer.css';
 const apiKey = 'ok7ZFsc8aNh6eVAKsDc3';
 const matoGrossoBounds = [ [-56.75, -15.9], [-56.85, -15.23] ];
 const tipoLegenda = {
-  "APP": "Área de Proteção Ambiental",
-  "ELNC": "Espaço Livre Não Configurado",
-  "EST": "Estacionamento",
-  "GNP": "Gleba Não Parcelada",
-  "LNE": "Não Edificado",
-  "SEL": "Sistema de Espaço Livre",
-  "SUB": "Subutilizado"
+  "APP": "Área de Proteção Ambiental", "ELNC": "Espaço Livre Não Configurado",
+  "EST": "Estacionamento", "GNP": "Gleba Não Parcelada", "LNE": "Não Edificado",
+  "SEL": "Sistema de Espaço Livre", "SUB": "Subutilizado"
 };
 
-
-function MapContainer() {
+function MapContainer({ filtrosAtivos }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -35,7 +30,6 @@ function MapContainer() {
     });
 
     mapRef.current.on('load', () => {
-      
       mapRef.current.addSource('pedra90', { 
         type:'geojson', 
         data:'/data/PEDRA90.geojson'
@@ -129,17 +123,35 @@ function MapContainer() {
     });
 
     return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
+      if (mapRef.current) mapRef.current.remove();
+      mapRef.current = null;
     };
+  }, []); 
 
-  }, []);
+  useEffect(() => {
+    if (!mapRef.current || !mapRef.current.getLayer('pedra90-layer')) {
+      return;
+    }
+    
+    if (filtrosAtivos.length === 0) {
+      mapRef.current.setLayoutProperty('pedra90-layer', 'visibility', 'none');
+      mapRef.current.setLayoutProperty('pedra90-outline', 'visibility', 'none');
+    } else {
+      mapRef.current.setLayoutProperty('pedra90-layer', 'visibility', 'visible');
+      mapRef.current.setLayoutProperty('pedra90-outline', 'visibility', 'visible');
+
+      const condicoes = filtrosAtivos.map(valor => ['==', ['get', 'TIPO'], valor]);
+      const meuFiltro = ['any', ...condicoes];
+      
+      mapRef.current.setFilter('pedra90-layer', meuFiltro);
+      mapRef.current.setFilter('pedra90-outline', meuFiltro);
+    }
+    
+  }, [filtrosAtivos]);
 
   return (
     <div className="map-wrapper" ref={mapContainerRef}>
-      {/* O MapLibre usa esta div para se desenhar */}
+
     </div>
   );
 }

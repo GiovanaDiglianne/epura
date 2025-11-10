@@ -1,57 +1,49 @@
-import React, { useState } from 'react'; // 1. IMPORTAMOS O useState
+// src/components/Sidebar/Sidebar.jsx
+import React, { useState } from 'react';
 import './Sidebar.css';
 
-// 2. COPIAMOS AS CONSTANTES DO SEU 'scripts.js' (TAMBÉM ESTÃO NO MAPCONTAINER)
-// Precisamos delas aqui para gerar os filtros
-const tipoLegenda = {
-  "APP": "Área de Proteção Ambiental",
-  "ELNC": "Espaço Livre Não Configurado",
-  "EST": "Estacionamento",
-  "GNP": "Gleba Não Parcelada",
-  "LNE": "Não Edificado",
-  "SEL": "Sistema de Espaço Livre",
-  "SUB": "Subutilizado"
-};
-const tipoKeys = Object.keys(tipoLegenda).sort();
-
-function Sidebar() {
+// 1. Recebemos 'props' do App.jsx (filtrosAtivos, setFiltrosAtivos, etc.)
+function Sidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
   
-  // 3. NOSSO PRIMEIRO "ESTADO"
-  // [variável, funçãoParaMudar] = useState(valorInicial)
-  // 'isFiltroOpen' vai guardar se o menu está aberto (true) ou fechado (false)
-  const [isFiltroOpen, setIsFiltroOpen] = useState(false); // Começa fechado
+  const [isFiltroOpen, setIsFiltroOpen] = useState(false); // Estado local (só a sidebar usa)
+
+  // 2. Esta é a função que muda o estado "Pai" (no App.jsx)
+  const handleFiltroChange = (e) => {
+    const filtro = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      setFiltrosAtivos( (filtrosAnteriores) => [...filtrosAnteriores, filtro] );
+    } else {
+      setFiltrosAtivos( (filtrosAnteriores) => 
+        filtrosAnteriores.filter(f => f !== filtro) 
+      );
+    }
+  };
 
   return (
     <div className="sidebar-container">
       <h3>Filtros</h3>
-
-      {/* 4. ADICIONAMOS O onClick AQUI */}
       <div 
         className="collapsible"
-        onClick={() => setIsFiltroOpen(!isFiltroOpen)} // Ao clicar, inverte o estado
+        onClick={() => setIsFiltroOpen(!isFiltroOpen)} // onClick com {função} (correto)
       >
         Tipos de Lote
       </div>
 
-      {/* 5. AQUI ESTÁ A "MÁGICA"
-          Usamos uma "classe condicional". 
-          Se 'isFiltroOpen' for true, o div terá a classe 'content open'
-          Se for false, terá a classe 'content'
-      */}
       <div className={`content ${isFiltroOpen ? 'open' : ''}`} >
         <div id="filtro-container">
           
-          {/* 6. GERANDO OS FILTROS COM JAVASCRIPT (JEITO REACT)
-              Usamos .map() para transformar o array 'tipoKeys' em HTML (JSX)
-              Isso substitui seu 'document.createElement'
-          */}
           {tipoKeys.map((key) => (
             <label key={key}>
               <input 
                 type="checkbox" 
                 className="filtro" 
-                value={key} 
-                defaultChecked // 'defaultChecked' significa "comece marcado"
+                value={key}
+                // 3. MUDAMOS DE 'defaultChecked' PARA 'checked'
+                checked={filtrosAtivos.includes(key)}
+                // 4. ADICIONAMOS O 'onChange'
+                onChange={handleFiltroChange}
               />
               {tipoLegenda[key]}
             </label>
@@ -59,15 +51,19 @@ function Sidebar() {
 
         </div>
       </div>
-
+      
       <h3 id="zoom">Zoom</h3>
-      <button onclick="zoomMapa([-56.1,-15.6],12)">
+      {/* 5. CORRIGIDO! 
+          Eu comentei a função por enquanto, pois 'zoomMapa' não existe.
+          O importante é que não é mais uma "string" 
+      */}
+      <button /* onClick={() => zoomMapa([-56.1,-15.6],12)} */>
         Cuiabá
       </button>
-      <button onclick="zoomMapa([-55.95,-15.64],15)">
+      <button /* onClick={() => zoomMapa([-55.95,-15.64],15)} */>
         Pedra 90
       </button>
-      <button onclick="zoomMapa([-56.059, -15.626],15)">
+      <button /* onClick={() => zoomMapa([-56.059, -15.626],15)} */>
         Coxipó
       </button>
 
