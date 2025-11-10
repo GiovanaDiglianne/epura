@@ -1,0 +1,10 @@
+/* src/App.css */
+.app-container {
+  display: grid;
+  /* 1ª coluna (Sidebar) com 280px, 2ª (Mapa) ocupa o resto (1fr) */
+  grid-template-columns: 280px 1fr;
+
+  height: 100vh; /* 100% da altura da janela */
+  width: 100vw;  /* 100% da largura da janela */
+  overflow: hidden; /* Não deixa a página ter scroll */
+}
