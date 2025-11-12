@@ -1,13 +1,12 @@
-// src/components/Sidebar/Sidebar.jsx
-import React, { useState } from 'react';
-import './Sidebar.css';
+import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
+import './Sidebar.css'; // Importa o arquivo CSS para estilizar o componente Sidebar.
 
-// 1. Recebemos 'props' do App.jsx (filtrosAtivos, setFiltrosAtivos, etc.)
-function Sidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
-  
-  const [isFiltroOpen, setIsFiltroOpen] = useState(false); // Estado local (só a sidebar usa)
+// Definição do componente Sidebar que recebe várias props do componente pai App.
+function Sidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys, infoLote, zoomMapa }) {
 
-  // 2. Esta é a função que muda o estado "Pai" (no App.jsx)
+  // Estado para controlar se a seção de filtros está aberta ou fechada.
+  const [isFiltroOpen, setIsFiltroOpen] = useState(false); 
+
   const handleFiltroChange = (e) => {
     const filtro = e.target.value;
     const isChecked = e.target.checked;
@@ -24,10 +23,7 @@ function Sidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
   return (
     <div className="sidebar-container">
       <h3>Filtros</h3>
-      <div 
-        className="collapsible"
-        onClick={() => setIsFiltroOpen(!isFiltroOpen)} // onClick com {função} (correto)
-      >
+      <div className="collapsible" onClick={() => setIsFiltroOpen(!isFiltroOpen)}>
         Tipos de Lote
       </div>
 
@@ -40,9 +36,7 @@ function Sidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
                 type="checkbox" 
                 className="filtro" 
                 value={key}
-                // 3. MUDAMOS DE 'defaultChecked' PARA 'checked'
                 checked={filtrosAtivos.includes(key)}
-                // 4. ADICIONAMOS O 'onChange'
                 onChange={handleFiltroChange}
               />
               {tipoLegenda[key]}
@@ -53,23 +47,17 @@ function Sidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
       </div>
       
       <h3 id="zoom">Zoom</h3>
-      {/* 5. CORRIGIDO! 
-          Eu comentei a função por enquanto, pois 'zoomMapa' não existe.
-          O importante é que não é mais uma "string" 
-      */}
-      <button /* onClick={() => zoomMapa([-56.1,-15.6],12)} */>
+      <button  onClick={() => zoomMapa ? zoomMapa([-56.1,-15.6],12): null}>
         Cuiabá
       </button>
-      <button /* onClick={() => zoomMapa([-55.95,-15.64],15)} */>
+      <button onClick={() => zoomMapa ? zoomMapa([-55.95,-15.64],15): null}>
         Pedra 90
       </button>
-      <button /* onClick={() => zoomMapa([-56.059, -15.626],15)} */>
+      <button onClick={() => zoomMapa ? zoomMapa([-56.059, -15.626],15): null}>
         Coxipó
       </button>
 
-      <div id="info">
-        Clique em um lote para ver detalhes
-      </div>
+      <div id="info" dangerouslySetInnerHTML={{ __html: infoLote }}/>
     </div>
   );
 }

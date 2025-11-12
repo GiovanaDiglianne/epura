@@ -6,12 +6,16 @@ import './MapContainer.css';
 const apiKey = 'ok7ZFsc8aNh6eVAKsDc3';
 const matoGrossoBounds = [ [-56.75, -15.9], [-56.85, -15.23] ];
 const tipoLegenda = {
-  "APP": "Área de Proteção Ambiental", "ELNC": "Espaço Livre Não Configurado",
-  "EST": "Estacionamento", "GNP": "Gleba Não Parcelada", "LNE": "Não Edificado",
-  "SEL": "Sistema de Espaço Livre", "SUB": "Subutilizado"
+  "APP": "Área de Proteção Ambiental", 
+  "ELNC": "Espaço Livre Não Configurado",
+  "EST": "Estacionamento", 
+  "GNP": "Gleba Não Parcelada", 
+  "LNE": "Não Edificado",
+  "SEL": "Sistema de Espaço Livre", 
+  "SUB": "Subutilizado"
 };
 
-function MapContainer({ filtrosAtivos }) {
+function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -65,11 +69,11 @@ function MapContainer({ filtrosAtivos }) {
       mapRef.current.on('click','pedra90-layer', e => {
         const props = e.features[0].properties;
         let html = '';
-        if(props.TIPO) html += `<b>Tipo:</b> <br> ${tipoLegenda[props.TIPO] || props.TIPO}<br><br>`;
-        if(props.inscricao) html += `<b>Inscrição:</b> <br> ${props.inscricao}<br><br>`;
-        if(props.AREA) html += `<b>Área:</b> <br> ${props.AREA} m²`;
+        if(props.TIPO) html += `<b>Tipo:</b> ${tipoLegenda[props.TIPO] || props.TIPO}<br>`;
+        if(props.inscricao) html += `<b>Inscrição:</b> ${props.inscricao}<br>`;
+        if(props.AREA) html += `<b>Área:</b> ${props.AREA} m²`;
         
-        document.getElementById('info').innerHTML = html || 'Sem informações';
+        setInfoLote(html || 'Sem informações');
       });
 
       mapRef.current.on('mouseenter','pedra90-layer', () => mapRef.current.getCanvas().style.cursor='pointer');
@@ -110,15 +114,20 @@ function MapContainer({ filtrosAtivos }) {
       mapRef.current.on('click','coxipo-layer', e => {
         const props = e.features[0].properties;
         let html = '';
-        if(props.TIPO) html += `<b>Tipo:</b> ${tipoLegenda[props.TIPO] || props.TIPO}<br>`;
+        if(props.TIPO) html += `<b>Tipo:</b> ${tipoLegenda[props.TIPO] || props.TIPO} <br>`;
         if(props.inscricao) html += `<b>Inscrição:</b> ${props.inscricao}<br>`;
         if(props.AREA) html += `<b>Área:</b> ${props.AREA} m²`;
         
-        document.getElementById('info').innerHTML = html || 'Sem informações';
+        setInfoLote(html || 'Sem informações');
       });
 
       mapRef.current.on('mouseenter','coxipo-layer', () => mapRef.current.getCanvas().style.cursor='pointer');
       mapRef.current.on('mouseleave','coxipo-layer', () => mapRef.current.getCanvas().style.cursor='');  
+
+      const localZoomMapa = (center, zoom) => {
+        mapRef.current.flyTo({ center, zoom });
+      };
+      setZoomMapa(() => localZoomMapa);
 
     });
 
