@@ -1,0 +1,58 @@
+.pesquisa-sidebar-container {
+  height: 100vh;
+  background: #fafafa; 
+  padding: 18px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  z-index: 900; 
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.pesquisa-sidebar-container h3 { 
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    font-size: 16px; 
+    color: #490108;
+}
+
+.pesquisa-sidebar-container .collapsible {
+  cursor: pointer;
+  background: #e0e0e0;
+  color: black;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.2s; /* Animação suave */
+}
+
+.pesquisa-sidebar-container .collapsible:hover {
+  background: #cccccc; /* Um cinza mais escuro */
+}
+
+.pesquisa-sidebar-container .collapsible.active {
+  background: #490108; /* Sua cor principal */
+  color: #f5f5f5; /* Texto claro */
+}
+
+.pesquisa-sidebar-container .content { 
+  display: none;
+  padding-left: 15px; 
+}
+
+.pesquisa-sidebar-container .content.open {
+  display: block;
+}
+
+.pesquisa-sidebar-container #filtro-container {
+  color: #490108;
+  overflow-y: auto;
+}
+
+.pesquisa-sidebar-container label { 
+  display: block; 
+  margin-bottom: 5px; 
+  accent-color: #490108;
+  font-size: 15px;
+}
