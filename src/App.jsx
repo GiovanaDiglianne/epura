@@ -1,8 +1,9 @@
 import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
-import './App.css'// Importa o arquivo CSS para estilizar o componente App.
-import Sidebar from './components/Sidebar/Sidebar' // Importa o componente filho Sidebar.
-import MapContainer from './components/MapContainer/MapContainer' // Importa o componente filho MapContainer.
-import PesquisaSidebar from './components/PesquisaSidebar/PesquisaSidebar' // Importa o componente filho PesquisaSidebar.
+import './App.css'
+import Sidebar from './components/Sidebar/Sidebar'
+import MapContainer from './components/MapContainer/MapContainer'
+import PesquisaSidebar from './components/PesquisaSidebar/PesquisaSidebar'
+import InfoPopup from './components/InfoPopup/InfoPopup'
 
 // Define o tipoLegenda e o tipoKeys fora do componente App para evitar recriação desnecessária em cada renderização.
 const tipoLegenda = {
@@ -22,9 +23,12 @@ function App() {
   const [filtrosAtivos, setFiltrosAtivos] = useState(tipoKeys); // Estado para gerenciar os filtros ativos.
   // Array de filtrosAtivos e função para atualizá-los, iniciando com todos os tipos ativos.
   // Passamos tipoKeys para que todos os filtros estejam ativos inicialmente.
-  const [infoLote, setInfoLote] = useState('Clique em um lote para ver detalhes'); 
   const [zoomMapa, setZoomMapa] = useState(null);
   const [isPesquisaOpen, setIsPesquisaOpen] = useState(false);
+  const [activeZoneId, setActiveZoneId] = useState('cuiaba'); 
+  const [openMunicipality, setOpenMunicipality] = useState('cuiaba');
+  const [infoLote, setInfoLote] = useState(null); 
+  const [showInitialMessage, setShowInitialMessage] = useState(true);
 
   return (
     // Tudo oque o componente App renderiza dentro da div id='root'.
@@ -35,6 +39,11 @@ function App() {
         zoomMapa={zoomMapa}
         setIsPesquisaOpen={setIsPesquisaOpen}
         isPesquisaOpen={isPesquisaOpen}
+        activeZoneId={activeZoneId}
+        setActiveZoneId={setActiveZoneId}
+        openMunicipality={openMunicipality}
+        setOpenMunicipality={setOpenMunicipality}
+        showInitialMessage={showInitialMessage}
       /> 
 
       {isPesquisaOpen && (
@@ -50,7 +59,16 @@ function App() {
         filtrosAtivos={filtrosAtivos}
         setInfoLote={setInfoLote}
         setZoomMapa={setZoomMapa}
+        setShowInitialMessage={setShowInitialMessage}
       />
+
+      {infoLote && (
+        <InfoPopup 
+          info={infoLote} 
+          tipoLegenda={tipoLegenda}
+          onClose={() => setInfoLote(null)} // O "X" limpa o estado (Request 3)
+        />
+      )}
     </div>
   )
 }

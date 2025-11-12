@@ -1,0 +1,47 @@
+.info-popup-container {
+  position: fixed; /* Flutua sobre a página */
+  top: 20px;
+  right: 20px;
+  width: 250px;
+  background: #f5f5f5;
+  padding: 18px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+  z-index: 1001; /* Garante que fique acima de outros elementos */
+  border-radius: 4px;
+  box-sizing: border-box;
+
+  /* Animação suave */
+  animation: fadeIn 0.3s;
+}
+
+.info-popup-container h3 {
+  margin-top: 0;
+  color: #490108;
+}
+
+.info-popup-container p {
+  margin: 10px 0;
+  font-size: 15px;
+  color: #490108;
+  word-break: break-word;
+}
+
+.info-popup-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+}
+.info-popup-close:hover {
+  color: #000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}

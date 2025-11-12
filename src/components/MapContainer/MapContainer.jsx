@@ -15,7 +15,7 @@ const tipoLegenda = {
   "SUB": "Subutilizado"
 };
 
-function addGeoJsonLayer(map, id, geojsonPath, tipoLegenda, setInfoLote) {
+function addGeoJsonLayer(map, id, geojsonPath, tipoLegenda, setInfoLote, setShowInitialMessage) {
   const sourceId = id;
   const fillLayerId = `${id}-layer`;
   const outlineLayerId = `${id}-outline`;
@@ -51,19 +51,15 @@ function addGeoJsonLayer(map, id, geojsonPath, tipoLegenda, setInfoLote) {
   });
   map.on('click', fillLayerId, e => {
     const props = e.features[0].properties;
-    let html = '';
-    if (props.TIPO) html += `<b>Tipo:</b> <br> ${tipoLegenda[props.TIPO] || props.TIPO}<br><br>`;
-    if (props.inscricao) html += `<b>Inscrição:</b> <br> ${props.inscricao}<br><br>`;
-    if (props.AREA) html += `<b>Área:</b> <br> ${props.AREA} m²`;
-
-    setInfoLote(html || 'Sem informações');
+    setInfoLote(props); // Envia o objeto de dados para o App.jsx
+    setShowInitialMessage(false); // Esconde a mensagem da sidebar (Request 2)
   });
 
   map.on('mouseenter', fillLayerId, () => map.getCanvas().style.cursor = 'pointer');
   map.on('mouseleave', fillLayerId, () => map.getCanvas().style.cursor = '');
 }
 
-function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa }) {
+function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialMessage }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const filterableLayerIds = ['pedra90'];
@@ -89,7 +85,8 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa }) {
         'pedra90',
         '/data/PEDRA90.geojson',
         tipoLegenda,          
-        setInfoLote           
+        setInfoLote, 
+        setShowInitialMessage         
       );
 
       // --- CARREGA COXIPÓ ---
@@ -98,7 +95,8 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa }) {
         'coxipo',
         '/data/COXIPO.geojson',
         tipoLegenda,
-        setInfoLote
+        setInfoLote,
+        setShowInitialMessage
       );
 
       const localZoomMapa = (center, zoom) => {

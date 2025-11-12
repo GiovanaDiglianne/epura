@@ -22,8 +22,9 @@
   padding: 8px 12px;
   margin-bottom: 8px;
   border-radius: 4px;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 16px;
+  text-align: center;
   transition: background-color 0.2s; /* Animação suave */
 }
 
