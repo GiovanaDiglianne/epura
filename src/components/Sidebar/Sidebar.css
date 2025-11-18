@@ -199,48 +199,45 @@
 }
 
 .municipality-btn-wrapper {
-  display: flex; /* Permite alinhar Texto e Seta lado a lado */
+  display: flex;
   align-items: center;
-  justify-content: space-between; /* Texto na esq, Seta na dir */
+  justify-content: space-between;
   
   margin-top: 5px;
   width: 100%;
   border-radius: 4px;
-  background: #e0e0e0; /* Cor padrão Inativo */
+  background: #e0e0e0;
   color: black;
   transition: background-color 0.2s;
-  overflow: hidden; /* Para o hover funcionar direitinho nas bordas */
+  overflow: hidden;
 }
 
-/* Quando Ativo (Escuro) */
 .municipality-btn-wrapper.active {
   background: #490108;
   color: #f5f5f5;
 }
 
-/* --- LADO ESQUERDO: O NOME (ZOOM) --- */
 .municipality-name {
-  flex-grow: 1; /* Ocupa todo o espaço possível */
+  flex-grow: 1;
   padding: 10px 12px;
   cursor: pointer;
   font-size: 16px;
-  text-align: center; /* Centralizado visualmente */
-  border-right: 1px solid rgba(0,0,0,0.1); /* Linha sutil separando a seta */
+  text-align: center;
+  border-right: 1px solid rgba(0,0,0,0.1);
 }
-/* Ajuste da linha separadora quando ativo (para ficar sutil no fundo escuro) */
+
 .municipality-btn-wrapper.active .municipality-name {
   border-right: 1px solid rgba(255,255,255,0.2);
 }
 
 .municipality-name:hover {
-  background-color: rgba(0,0,0,0.05); /* Efeito hover suave só no texto */
+  background-color: rgba(0,0,0,0.05);
 }
 
-/* --- LADO DIREITO: A SETA (TOGGLE) --- */
 .municipality-arrow {
   padding: 10px 12px;
   cursor: pointer;
-  font-size: 12px; /* Seta um pouco menor */
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;

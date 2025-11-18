@@ -13,19 +13,14 @@ function Sidebar({
   setOpenMunicipality
 }) {
 
-  // 1. FUNÇÃO DE ZOOM (Clica no TEXTO "Cuiabá")
   const handleMunicipalityZoom = (id, center, zoom) => {
     if (zoomMapa) zoomMapa(center, zoom);
     setActiveZoneId(id);
-    // Opcional: Se você quiser que ao clicar no texto TAMBÉM abra a lista, descomente abaixo:
-    // setOpenMunicipality(id); 
   };
 
-  // 2. FUNÇÃO DE TOGGLE (Clica na SETA)
   const handleMunicipalityToggle = (e, id) => {
-    e.stopPropagation(); // <--- O SEGREDO: Impede que o clique na seta ative o zoom
-    
-    // Se já está aberto, fecha (null). Se não, abre (id).
+    e.stopPropagation();
+
     if (openMunicipality === id) {
       setOpenMunicipality(null);
     } else {
@@ -56,8 +51,7 @@ function Sidebar({
       <h3 id="titulo">ÉPURA</h3>
       <button 
         className={`pesquisa-title ${isPesquisaOpen ? 'active' : ''}`} 
-        onClick={() => setIsPesquisaOpen(prev => !prev)} 
-      >
+        onClick={() => setIsPesquisaOpen(prev => !prev)}>
         Pesquisas
       </button>
 
@@ -66,8 +60,7 @@ function Sidebar({
         
         <div 
           className="municipality-name"
-          onClick={() => handleMunicipalityZoom('cuiaba', [-56.1,-15.6], 12)}
-        >
+          onClick={() => handleMunicipalityZoom('cuiaba', [-56.1,-15.6], 12)}>
           Cuiabá
         </div>
 
@@ -83,14 +76,12 @@ function Sidebar({
         <div className="content open"> 
           <button 
             className={activeZoneId === 'pedra90' ? 'active' : ''}
-            onClick={() => handleZoneClick('pedra90', [-55.95,-15.64], 15)}
-          >
+            onClick={() => handleZoneClick('pedra90', [-55.95,-15.64], 15)}>
             Pedra 90
           </button>
           <button 
             className={activeZoneId === 'coxipo' ? 'active' : ''}
-            onClick={() => handleZoneClick('coxipo', [-56.059, -15.626], 15)}
-          >
+            onClick={() => handleZoneClick('coxipo', [-56.059, -15.626], 15)}>
             Coxipó
           </button>
         </div>
@@ -100,7 +91,10 @@ function Sidebar({
         <div className="info-icon">i</div>
       
         <div className="info-tooltip">
-          Clique em um lote para ver detalhes na caixa lateral.
+          Clique em um lote para ver detalhes na caixa lateral.<br/><br/>
+          Clique com o botão direito do mouse e arraste no mapa para mudar a visualização.<br/><br/>
+          Clique com o botão esquerdo do mouse e arraste para navegar pelo mapa.<br/><br/>
+          Use a roda do mouse para dar zoom in e zoom out no mapa.
         </div>
       </div>
     </div>

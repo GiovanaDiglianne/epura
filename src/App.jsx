@@ -33,7 +33,7 @@ function App() {
   return (
     // Tudo oque o componente App renderiza dentro da div id='root'.
     <div className={`app-container ${isPesquisaOpen ? 'pesquisa-open' : ''}`}>
-      {/* Todas as props que o componente pai passa para o filho */}
+
       <Sidebar 
         infoLote={infoLote}
         zoomMapa={zoomMapa}
@@ -65,9 +65,10 @@ function App() {
         <InfoPopup 
           info={infoLote} 
           tipoLegenda={tipoLegenda}
-          onClose={() => setInfoLote(null)} // O "X" limpa o estado (Request 3)
+          onClose={() => setInfoLote(null)}
         />
       )}
+      
     </div>
   )
 }
