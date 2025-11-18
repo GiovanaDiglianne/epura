@@ -120,21 +120,25 @@
 .sidebar-container .content.open {
   display: block;
 }
-
-/* Opcional: Estilo mais sutil para botões "filhos" */
 .sidebar-container .content button {
-  background-color: #f0f0f0; /* Um cinza ainda mais claro */
+  /* Assegure que isso exista no seu CSS */
+  margin-top: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  background: #f0f0f0; 
   color: #333;
+}
+.sidebar-container .content button.active {
+  background: #490108;
+  color: #f5f5f5;
 }
 
 .sidebar-container .content button:hover {
   background-color: #ddd;
-}
-
-/* O estilo .active (cor vinho) já funciona neles! */
-.sidebar-container .content button.active {
-  background-color: #490108;
-  color: #f5f5f5;
 }
 
 .sidebar-container .info-icon-wrapper {
@@ -143,7 +147,6 @@
   position: relative;
   display: inline-block;
 }
-
 
 .sidebar-container .info-icon {
   width: 24px;
@@ -244,26 +247,6 @@
 }
 
 .municipality-arrow:hover {
-  background-color: rgba(0,0,0,0.1); /* Efeito hover mais forte na seta */
+  background-color: rgba(0,0,0,0.1);
 }
-
-/* --- MANTENHA OS ESTILOS DOS FILHOS (PEDRA 90/COXIPÓ) --- */
-/* Eles continuam sendo <button>, então a regra antiga funciona, 
-   mas vamos garantir que eles tenham o recuo correto */
    
-.sidebar-container .content button {
-  /* Assegure que isso exista no seu CSS */
-  margin-top: 5px;
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 100%;
-  border: none;
-  border-radius: 4px;
-  background: #f0f0f0; 
-  color: #333;
-}
-.sidebar-container .content button.active {
-  background: #490108;
-  color: #f5f5f5;
-}

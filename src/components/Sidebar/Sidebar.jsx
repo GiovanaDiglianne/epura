@@ -53,7 +53,7 @@ function Sidebar({
           alt="Logo do Projeto" 
         />
       </div>
-      <h3 id="titulo">ÉPura</h3>
+      <h3 id="titulo">ÉPURA</h3>
       <button 
         className={`pesquisa-title ${isPesquisaOpen ? 'active' : ''}`} 
         onClick={() => setIsPesquisaOpen(prev => !prev)} 

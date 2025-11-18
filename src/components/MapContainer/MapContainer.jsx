@@ -109,8 +109,7 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialM
       addGeoJsonLayer(
         mapRef.current,
         'pedra90',
-        '/data/PEDRA90.geojson',
-        tipoLegenda,          
+        '/data/PEDRA90.geojson',     
         setInfoLote, 
         setShowInitialMessage         
       );
@@ -119,7 +118,6 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialM
         mapRef.current,
         'coxipo',
         '/data/COXIPO.geojson',
-        tipoLegenda,
         setInfoLote,
         setShowInitialMessage
       );
