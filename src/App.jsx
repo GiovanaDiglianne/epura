@@ -43,7 +43,6 @@ function App() {
         setActiveZoneId={setActiveZoneId}
         openMunicipality={openMunicipality}
         setOpenMunicipality={setOpenMunicipality}
-        showInitialMessage={showInitialMessage}
       /> 
 
       {isPesquisaOpen && (

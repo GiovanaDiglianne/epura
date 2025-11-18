@@ -15,7 +15,7 @@ const tipoLegenda = {
   "SUB": "Subutilizado"
 };
 
-function addGeoJsonLayer(map, id, geojsonPath, tipoLegenda, setInfoLote, setShowInitialMessage) {
+function addGeoJsonLayer(map, id, geojsonPath, setInfoLote, setShowInitialMessage) {
   const sourceId = id;
   const fillLayerId = `${id}-layer`;
   const outlineLayerId = `${id}-outline`;
@@ -59,6 +59,32 @@ function addGeoJsonLayer(map, id, geojsonPath, tipoLegenda, setInfoLote, setShow
   map.on('mouseleave', fillLayerId, () => map.getCanvas().style.cursor = '');
 }
 
+function addLineLayer(map, id, geojsonPath, color, lineWidth) {
+  const sourceId = id;
+  const layerId = `${id}-line`;
+
+  // 1. Adiciona a fonte dos dados
+  map.addSource(sourceId, {
+    type: 'geojson',
+    data: geojsonPath
+  });
+
+  // 2. Adiciona a camada visual (apenas linha)
+  map.addLayer({
+    id: layerId,
+    type: 'line',
+    source: sourceId,
+    layout: {
+      'line-join': 'round',
+      'line-cap': 'round'
+    },
+    paint: {
+      'line-color': color,       // Cor que você escolher
+      'line-width': lineWidth    // Grossura da linha
+    }
+  });
+}
+
 function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialMessage }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -79,7 +105,7 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialM
     });
 
     mapRef.current.on('load', () => {
-      // --- CARREGA PEDRA 90 ---
+
       addGeoJsonLayer(
         mapRef.current,
         'pedra90',
@@ -89,7 +115,6 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialM
         setShowInitialMessage         
       );
 
-      // --- CARREGA COXIPÓ ---
       addGeoJsonLayer(
         mapRef.current,
         'coxipo',
@@ -97,6 +122,30 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialM
         tipoLegenda,
         setInfoLote,
         setShowInitialMessage
+      );
+      
+      addLineLayer(
+        mapRef.current, 
+        'ribeirao', 
+        '/data/RIBEIRAO.geojson', 
+        '#64bbeeff', 
+        3          
+      );
+
+      addLineLayer(
+        mapRef.current, 
+        'perimetro', 
+        '/data/PERIMETRO.geojson', 
+        '#8648d867', 
+        2
+      );
+
+      addLineLayer(
+        mapRef.current, 
+        'contorno', 
+        '/data/CONTORNO.geojson', 
+        '#ff000067',
+        2
       );
 
       const localZoomMapa = (center, zoom) => {

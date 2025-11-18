@@ -6,8 +6,28 @@
   z-index: 1000;
   overflow-y: auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
+.sidebar-container .sidebar-logo {
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+
+.sidebar-container .sidebar-logo:hover {
+  opacity: 0.8;
+}
+
+.sidebar-container .sidebar-logo img {
+  max-width: 100%;
+  height: auto;
+  max-height: 80px;
+  object-fit: contain;
+  border-radius: 4px;
+}
 .sidebar-container h3 { 
     margin-top:10px; 
     margin-bottom: 10px;
@@ -41,16 +61,6 @@
   color: #f5f5f5;
 }
 
-.sidebar-container #info { 
-    margin-top: 15px; 
-    font-size: 15px; 
-    color:#490108; 
-    word-break: break-word; 
-    padding: 10px; 
-    background:#ffffff; 
-    border-radius:4px; 
-    border: 1px solid #ddd;
-}
 
 .sidebar-container .pesquisa-title {
   cursor: pointer;
@@ -67,7 +77,7 @@
 }
 
 .sidebar-container .pesquisa-title:hover {
-  background-color: #cccccc; /* Cinza mais escuro (igual ao hover dos botões) */
+  background-color: #ccccccc0; /* Cinza mais escuro (igual ao hover dos botões) */
 }
 
 .sidebar-container .pesquisa-title.active {
@@ -82,7 +92,6 @@
   margin-top: 5px;
   border-radius: 4px;
   transition: background-color 0.2s, color 0.2s;
-  
   text-align: center;
   font-size: 16px;
   font-weight: normal;
@@ -105,7 +114,6 @@
 
 .sidebar-container .content.open {
   display: block;
-  padding-left: 10px;
 }
 
 /* Opcional: Estilo mais sutil para botões "filhos" */
@@ -121,5 +129,136 @@
 /* O estilo .active (cor vinho) já funciona neles! */
 .sidebar-container .content button.active {
   background-color: #490108;
+  color: #f5f5f5;
+}
+
+.sidebar-container .info-icon-wrapper {
+  margin-top: auto; 
+  padding-top: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+
+.sidebar-container .info-icon {
+  width: 24px;
+  height: 24px;
+  background-color: #490108;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  cursor: help;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.sidebar-container .info-tooltip {
+  position: fixed; 
+  left: 60px;
+  bottom: 20px;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  width: 180px;
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition-delay: 2s;
+}
+.sidebar-container .info-tooltip::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 12px; 
+  border-width: 6px 6px 6px 0;
+  border-style: solid;
+  border-color: transparent #333 transparent transparent;
+}
+
+.sidebar-container .info-icon-wrapper:hover .info-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s; 
+}
+
+.municipality-btn-wrapper {
+  display: flex; /* Permite alinhar Texto e Seta lado a lado */
+  align-items: center;
+  justify-content: space-between; /* Texto na esq, Seta na dir */
+  
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 4px;
+  background: #e0e0e0; /* Cor padrão Inativo */
+  color: black;
+  transition: background-color 0.2s;
+  overflow: hidden; /* Para o hover funcionar direitinho nas bordas */
+}
+
+/* Quando Ativo (Escuro) */
+.municipality-btn-wrapper.active {
+  background: #490108;
+  color: #f5f5f5;
+}
+
+/* --- LADO ESQUERDO: O NOME (ZOOM) --- */
+.municipality-name {
+  flex-grow: 1; /* Ocupa todo o espaço possível */
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center; /* Centralizado visualmente */
+  border-right: 1px solid rgba(0,0,0,0.1); /* Linha sutil separando a seta */
+}
+/* Ajuste da linha separadora quando ativo (para ficar sutil no fundo escuro) */
+.municipality-btn-wrapper.active .municipality-name {
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+
+.municipality-name:hover {
+  background-color: rgba(0,0,0,0.05); /* Efeito hover suave só no texto */
+}
+
+/* --- LADO DIREITO: A SETA (TOGGLE) --- */
+.municipality-arrow {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 12px; /* Seta um pouco menor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.municipality-arrow:hover {
+  background-color: rgba(0,0,0,0.1); /* Efeito hover mais forte na seta */
+}
+
+/* --- MANTENHA OS ESTILOS DOS FILHOS (PEDRA 90/COXIPÓ) --- */
+/* Eles continuam sendo <button>, então a regra antiga funciona, 
+   mas vamos garantir que eles tenham o recuo correto */
+   
+.sidebar-container .content button {
+  /* Assegure que isso exista no seu CSS */
+  margin-top: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  background: #f0f0f0; 
+  color: #333;
+}
+.sidebar-container .content button.active {
+  background: #490108;
   color: #f5f5f5;
 }

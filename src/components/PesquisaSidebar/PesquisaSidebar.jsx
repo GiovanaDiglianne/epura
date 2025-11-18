@@ -21,7 +21,7 @@ function PesquisaSidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKey
         <div 
         className={`collapsible ${isFiltroOpen ? 'active' : ''}`}
         onClick={() => setIsFiltroOpen(!isFiltroOpen)}>
-            Vazios
+            Vazios Urbanos
         </div>
 
         <div className={`content ${isFiltroOpen ? 'open' : ''}`} >
