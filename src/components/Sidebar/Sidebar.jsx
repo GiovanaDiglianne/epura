@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
 import './Sidebar.css'; // Importa o arquivo CSS para estilizar o componente Sidebar.
+import logoSrc from '../../assets/logo.png';
 
 // Definição do componente Sidebar que recebe várias props do componente pai App.
 function Sidebar({ 
@@ -48,9 +49,11 @@ function Sidebar({
         onClick={() => window.location.reload()}
         title="Recarregar página">
         <img 
-          src="https://placehold.co/200x80/490108/FFF?text=LOGOTIPO" 
-          alt="Logo do Projeto"/>
+          src={logoSrc}
+          alt="Logo do Projeto" 
+        />
       </div>
+      <h3 id="titulo">ÉPura</h3>
       <button 
         className={`pesquisa-title ${isPesquisaOpen ? 'active' : ''}`} 
         onClick={() => setIsPesquisaOpen(prev => !prev)} 
@@ -61,7 +64,6 @@ function Sidebar({
       <h3 id="zoom">Municípios</h3>
       <div className={`municipality-btn-wrapper ${isCuiabaActive ? 'active' : ''}`}>
         
-        {/* LADO ESQUERDO: Texto (Zoom) */}
         <div 
           className="municipality-name"
           onClick={() => handleMunicipalityZoom('cuiaba', [-56.1,-15.6], 12)}
@@ -69,18 +71,14 @@ function Sidebar({
           Cuiabá
         </div>
 
-        {/* LADO DIREITO: Seta (Abrir/Fechar) */}
         <div 
           className="municipality-arrow"
-          onClick={(e) => handleMunicipalityToggle(e, 'cuiaba')}
-        >
-          {/* Se estiver aberto mostra ^, senão v */}
+          onClick={(e) => handleMunicipalityToggle(e, 'cuiaba')}>
           {openMunicipality === 'cuiaba' ? '▲' : '▼'}
         </div>
 
       </div>
 
-      {/* --- ZONAS ESPECÍFICAS (FILHOS) --- */}
       {openMunicipality === 'cuiaba' && (
         <div className="content open"> 
           <button 
