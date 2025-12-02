@@ -3,7 +3,7 @@ import './PesquisaSidebar.css';
 
 function PesquisaSidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
 
-  const [isFiltroOpen, setIsFiltroOpen] = useState(true); // Começa aberto
+  const [isFiltroOpen, setIsFiltroOpen] = useState(true);
 
   const handleFiltroChange = (e) => {
     const filtro = e.target.value;

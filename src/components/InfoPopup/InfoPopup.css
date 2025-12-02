@@ -1,16 +1,14 @@
 .info-popup-container {
-  position: fixed; /* Flutua sobre a página */
+  position: fixed;
   top: 20px;
   right: 20px;
   width: 250px;
   background: #f5f5f5;
   padding: 18px;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-  z-index: 1001; /* Garante que fique acima de outros elementos */
+  z-index: 1001;
   border-radius: 4px;
   box-sizing: border-box;
-
-  /* Animação suave */
   animation: fadeIn 0.3s;
 }
 

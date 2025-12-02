@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import './ProducoesSidebar.css';
 
 const ProducoesSidebar = ({ showRibeirao, setShowRibeirao }) => {
-    // Estado local para controlar se a aba está aberta
     const [isOpen, setIsOpen] = useState(true);
     return (
     <div className="second-sidebar-container">
         <h3>Regiões Metropolitanas</h3>
 
-        {/* Botão Acordeão */}
         <div 
             className={`collapsible ${isOpen ? 'active' : ''}`}
             onClick={() => setIsOpen(!isOpen)}
@@ -16,7 +14,6 @@ const ProducoesSidebar = ({ showRibeirao, setShowRibeirao }) => {
             Vale do Rio Cuiabá
         </div>
 
-        {/* Conteúdo Expansível */}
         <div className={`content ${isOpen ? 'open' : ''}`}>
             <div className="opcoes-lista">
                 

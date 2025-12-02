@@ -41,11 +41,9 @@ function App() {
     if (!isProducoesOpen) setIsPesquisaOpen(false);
   }
 
-  // Verifica se QUALQUER uma das sidebars está aberta
   const isSidebarExpanded = isPesquisaOpen || isProducoesOpen;
 
   return (
-    // CORREÇÃO AQUI: Usamos 'isSidebarExpanded' em vez de apenas 'isPesquisaOpen'
     <div className={`app-container ${isSidebarExpanded ? 'pesquisa-open' : ''}`}>
 
       <Sidebar 

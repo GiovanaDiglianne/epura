@@ -1,5 +1,5 @@
 import React from 'react';
-import './InfoPopup.css'; // Vamos criar este CSS
+import './InfoPopup.css';
 
 function InfoPopup({ info, onClose, tipoLegenda }) {
 

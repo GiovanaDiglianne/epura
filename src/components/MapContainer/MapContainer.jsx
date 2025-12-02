@@ -51,8 +51,8 @@ function addGeoJsonLayer(map, id, geojsonPath, setInfoLote, setShowInitialMessag
   });
   map.on('click', fillLayerId, e => {
     const props = e.features[0].properties;
-    setInfoLote(props); // Envia o objeto de dados para o App.jsx
-    setShowInitialMessage(false); // Esconde a mensagem da sidebar (Request 2)
+    setInfoLote(props);
+    setShowInitialMessage(false);
   });
 
   map.on('mouseenter', fillLayerId, () => map.getCanvas().style.cursor = 'pointer');
@@ -63,13 +63,11 @@ function addLineLayer(map, id, geojsonPath, color, lineWidth) {
   const sourceId = id;
   const layerId = `${id}-line`;
 
-  // 1. Adiciona a fonte dos dados
   map.addSource(sourceId, {
     type: 'geojson',
     data: geojsonPath
   });
 
-  // 2. Adiciona a camada visual (apenas linha)
   map.addLayer({
     id: layerId,
     type: 'line',
@@ -79,8 +77,8 @@ function addLineLayer(map, id, geojsonPath, color, lineWidth) {
       'line-cap': 'round'
     },
     paint: {
-      'line-color': color,       // Cor que você escolher
-      'line-width': lineWidth    // Grossura da linha
+      'line-color': color,      
+      'line-width': lineWidth   
     }
   });
 }

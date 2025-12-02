@@ -1,9 +1,8 @@
-import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
+import React, { useState } from 'react';
 import { FaSearch, FaFolderOpen } from 'react-icons/fa';
-import './Sidebar.css'; // Importa o arquivo CSS para estilizar o componente Sidebar.
+import './Sidebar.css'; 
 import logoSrc from '../../assets/logo.png';
 
-// Definição do componente Sidebar que recebe várias props do componente pai App.
 function Sidebar({ 
   infoLote,
   zoomMapa, 
