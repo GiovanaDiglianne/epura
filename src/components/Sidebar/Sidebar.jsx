@@ -1,12 +1,16 @@
 import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
+import { FaSearch, FaHome, FaMap, FaInfoCircle, FaFolderOpen } from 'react-icons/fa';
 import './Sidebar.css'; // Importa o arquivo CSS para estilizar o componente Sidebar.
 import logoSrc from '../../assets/logo.png';
 
 // Definição do componente Sidebar que recebe várias props do componente pai App.
 function Sidebar({ 
+  infoLote,
   zoomMapa, 
   setIsPesquisaOpen, 
-  isPesquisaOpen, 
+  isPesquisaOpen,
+  setIsProducoesOpen,
+  isProducoesOpen,
   activeZoneId,
   setActiveZoneId,
   openMunicipality,
@@ -50,9 +54,17 @@ function Sidebar({
       </div>
       <h3 id="titulo">ÉPURA</h3>
       <button 
-        className={`pesquisa-title ${isPesquisaOpen ? 'active' : ''}`} 
-        onClick={() => setIsPesquisaOpen(prev => !prev)}>
-        Pesquisas
+        className={`sidebar-btn ${isPesquisaOpen ? 'active' : ''}`}
+        onClick={setIsPesquisaOpen}>
+        <FaSearch size={20} />
+        <span>Pesquisas</span>
+      </button>
+
+      <button 
+        className={`sidebar-btn ${isProducoesOpen ? 'active' : ''}`}
+        onClick={setIsProducoesOpen}>
+        <FaFolderOpen size={20} />
+        <span>Produções</span>
       </button>
 
       <h3 id="zoom">Municípios</h3>

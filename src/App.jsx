@@ -1,13 +1,12 @@
-import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
+import React, { useState } from 'react'; 
 import './App.css'
 import Sidebar from './components/Sidebar/Sidebar'
 import MapContainer from './components/MapContainer/MapContainer'
 import PesquisaSidebar from './components/PesquisaSidebar/PesquisaSidebar'
+import ProducoesSidebar from './components/ProducoesSidebar/ProducoesSidebar'
 import InfoPopup from './components/InfoPopup/InfoPopup'
 
-// Define o tipoLegenda e o tipoKeys fora do componente App para evitar recriação desnecessária em cada renderização.
 const tipoLegenda = {
-  // Chave : Descrição.
   "APP": "Área de Proteção Ambiental", 
   "ELNC": "Espaço Livre Não Configurado",
   "EST": "Estacionamento", 
@@ -16,29 +15,46 @@ const tipoLegenda = {
   "SEL": "Sistema de Espaço Livre", 
   "SUB": "Subutilizado"
 };
-const tipoKeys = Object.keys(tipoLegenda); // Cria um array com as chaves do objeto tipoLegenda.
+const tipoKeys = Object.keys(tipoLegenda); 
 
-// Definição do componente principal da aplicação.
 function App() {
-  const [filtrosAtivos, setFiltrosAtivos] = useState(tipoKeys); // Estado para gerenciar os filtros ativos.
-  // Array de filtrosAtivos e função para atualizá-los, iniciando com todos os tipos ativos.
-  // Passamos tipoKeys para que todos os filtros estejam ativos inicialmente.
+  const [filtrosAtivos, setFiltrosAtivos] = useState(tipoKeys); 
   const [zoomMapa, setZoomMapa] = useState(null);
+
   const [isPesquisaOpen, setIsPesquisaOpen] = useState(false);
+  const [isProducoesOpen, setIsProducoesOpen] = useState(false);
+
+  const [showRibeirao, setShowRibeirao] = useState(true);
+
   const [activeZoneId, setActiveZoneId] = useState('cuiaba'); 
   const [openMunicipality, setOpenMunicipality] = useState('cuiaba');
   const [infoLote, setInfoLote] = useState(null); 
   const [showInitialMessage, setShowInitialMessage] = useState(true);
 
+  const togglePesquisa = () => {
+    setIsPesquisaOpen(!isPesquisaOpen);
+    if (!isPesquisaOpen) setIsProducoesOpen(false);
+  }
+
+  const toggleProducoes = () => {
+    setIsProducoesOpen(!isProducoesOpen);
+    if (!isProducoesOpen) setIsPesquisaOpen(false);
+  }
+
+  // Verifica se QUALQUER uma das sidebars está aberta
+  const isSidebarExpanded = isPesquisaOpen || isProducoesOpen;
+
   return (
-    // Tudo oque o componente App renderiza dentro da div id='root'.
-    <div className={`app-container ${isPesquisaOpen ? 'pesquisa-open' : ''}`}>
+    // CORREÇÃO AQUI: Usamos 'isSidebarExpanded' em vez de apenas 'isPesquisaOpen'
+    <div className={`app-container ${isSidebarExpanded ? 'pesquisa-open' : ''}`}>
 
       <Sidebar 
         infoLote={infoLote}
         zoomMapa={zoomMapa}
-        setIsPesquisaOpen={setIsPesquisaOpen}
+        setIsPesquisaOpen={togglePesquisa}
         isPesquisaOpen={isPesquisaOpen}
+        setIsProducoesOpen={toggleProducoes}
+        isProducoesOpen={isProducoesOpen}
         activeZoneId={activeZoneId}
         setActiveZoneId={setActiveZoneId}
         openMunicipality={openMunicipality}
@@ -54,11 +70,19 @@ function App() {
         />
       )}
 
+      {isProducoesOpen && (
+        <ProducoesSidebar 
+          showRibeirao={showRibeirao}
+          setShowRibeirao={setShowRibeirao}
+        />
+      )}
+
       <MapContainer 
         filtrosAtivos={filtrosAtivos}
         setInfoLote={setInfoLote}
         setZoomMapa={setZoomMapa}
         setShowInitialMessage={setShowInitialMessage}
+        showRibeirao={showRibeirao}
       />
 
       {infoLote && (

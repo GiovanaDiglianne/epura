@@ -85,10 +85,10 @@ function addLineLayer(map, id, geojsonPath, color, lineWidth) {
   });
 }
 
-function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialMessage }) {
+function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialMessage, showRibeirao }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  const filterableLayerIds = ['pedra90'];
+  const filterableLayerIds = ['pedra90', 'coxipo'];
 
   useEffect(() => {
     if (mapRef.current) return;
@@ -158,6 +158,14 @@ function MapContainer({ filtrosAtivos, setInfoLote, setZoomMapa, setShowInitialM
       mapRef.current = null;
     };
   }, []); 
+
+  useEffect(() => {
+    if (!mapRef.current || !mapRef.current.getLayer('ribeirao-line')) return;
+
+    const visibility = showRibeirao ? 'visible' : 'none';
+    mapRef.current.setLayoutProperty('ribeirao-line', 'visibility', visibility);
+    
+  }, [showRibeirao]);
 
   useEffect(() => {
     if (!mapRef.current || !filterableLayerIds.length || !mapRef.current.getLayer(`${filterableLayerIds[0]}-layer`)) {

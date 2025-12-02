@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './PesquisaSidebar.css'; // Novo arquivo CSS
+import './PesquisaSidebar.css';
 
 function PesquisaSidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKeys }) {
 
-  const [isFiltroOpen, setIsFiltroOpen] = useState(false); // Começa aberto
+  const [isFiltroOpen, setIsFiltroOpen] = useState(true); // Começa aberto
 
   const handleFiltroChange = (e) => {
     const filtro = e.target.value;
@@ -16,7 +16,7 @@ function PesquisaSidebar({ filtrosAtivos, setFiltrosAtivos, tipoLegenda, tipoKey
   };
 
   return (
-    <div className="pesquisa-sidebar-container">
+    <div className="second-sidebar-container">
         <h3>Eixos Temáticos</h3>
         <div 
         className={`collapsible ${isFiltroOpen ? 'active' : ''}`}

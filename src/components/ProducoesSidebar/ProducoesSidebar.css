@@ -25,35 +25,47 @@
   font-weight: normal;
   font-size: 16px;
   text-align: center;
-  transition: background-color 0.2s; /* Animação suave */
+  transition: background-color 0.2s;
 }
 
 .second-sidebar-container .collapsible:hover {
-  background: #cccccc; /* Um cinza mais escuro */
+  background: #cccccc;
 }
 
 .second-sidebar-container .collapsible.active {
-  background: #490108; /* Sua cor principal */
-  color: #f5f5f5; /* Texto claro */
+  background: #490108;
+  color: #f5f5f5;
 }
 
-.second-sidebar-container .content { 
-  display: none;
-  padding-left: 15px; 
+.second-sidebar-container .content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: transparent;
 }
 
 .second-sidebar-container .content.open {
-  display: block;
+  max-height: 500px;
+  transition: max-height 0.5s ease-in;
 }
 
-.second-sidebar-container #filtro-container {
-  color: #490108;
-  overflow-y: auto;
+.opcao-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.second-sidebar-container label { 
-  display: block; 
-  margin-bottom: 5px; 
-  accent-color: #490108;
-  font-size: 15px;
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.checkbox-label input {
+    cursor: pointer;
 }

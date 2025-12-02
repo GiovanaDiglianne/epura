@@ -1,5 +1,4 @@
 // react: lógica, componentes, estados | react-dom: pega a lógica do react e "desenha" na tela.
-
 import { StrictMode } from 'react' // Ferramenta de desenvolvimento auxilia na identificação de problemas.
 import { createRoot } from 'react-dom/client' // Ferramenta para renderizar a aplicação React na DOM(página web).
 import './index.css' // Importa o arquivo CSS global para estilizar a aplicação.
