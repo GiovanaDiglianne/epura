@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; // React: Ajuda o React a compreender JSX | {useState}: permite que o componente (tenha memória) gerencie estado.
-import { FaSearch, FaHome, FaMap, FaInfoCircle, FaFolderOpen } from 'react-icons/fa';
+import { FaSearch, FaFolderOpen } from 'react-icons/fa';
 import './Sidebar.css'; // Importa o arquivo CSS para estilizar o componente Sidebar.
 import logoSrc from '../../assets/logo.png';
 
@@ -57,14 +57,14 @@ function Sidebar({
         className={`sidebar-btn ${isPesquisaOpen ? 'active' : ''}`}
         onClick={setIsPesquisaOpen}>
         <FaSearch size={20} />
-        <span>Pesquisas</span>
+        <span>  Pesquisas</span>
       </button>
 
       <button 
         className={`sidebar-btn ${isProducoesOpen ? 'active' : ''}`}
         onClick={setIsProducoesOpen}>
         <FaFolderOpen size={20} />
-        <span>Produções</span>
+        <span>  Produções</span>
       </button>
 
       <h3 id="zoom">Municípios</h3>
