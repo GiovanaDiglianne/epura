@@ -55,14 +55,14 @@ function Sidebar({
       <button 
         className={`sidebar-btn ${isPesquisaOpen ? 'active' : ''}`}
         onClick={setIsPesquisaOpen}>
-        <FaSearch size={20} />
+        <FaSearch size={15} />
         <span>  Pesquisas</span>
       </button>
 
       <button 
         className={`sidebar-btn ${isProducoesOpen ? 'active' : ''}`}
         onClick={setIsProducoesOpen}>
-        <FaFolderOpen size={20} />
+        <FaFolderOpen size={15} />
         <span>  Produções</span>
       </button>
 
