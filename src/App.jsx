@@ -47,7 +47,6 @@ function App() {
     <div className={`app-container ${isSidebarExpanded ? 'pesquisa-open' : ''}`}>
 
       <Sidebar 
-        infoLote={infoLote}
         zoomMapa={zoomMapa}
         setIsPesquisaOpen={togglePesquisa}
         isPesquisaOpen={isPesquisaOpen}
@@ -79,9 +78,19 @@ function App() {
         filtrosAtivos={filtrosAtivos}
         setInfoLote={setInfoLote}
         setZoomMapa={setZoomMapa}
+        showInitialMessage={showInitialMessage}
         setShowInitialMessage={setShowInitialMessage}
         showRibeirao={showRibeirao}
       />
+
+      <a 
+        href="https://site-epura.vercel.app/" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="btn-site-epura"
+      >
+        Acesse nosso site
+      </a>
 
       {infoLote && (
         <InfoPopup 

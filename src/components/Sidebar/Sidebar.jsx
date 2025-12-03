@@ -4,7 +4,7 @@ import './Sidebar.css';
 import logoSrc from '../../assets/logo.png';
 
 function Sidebar({ 
-  infoLote,
+
   zoomMapa, 
   setIsPesquisaOpen, 
   isPesquisaOpen,
@@ -103,7 +103,7 @@ function Sidebar({
       
         <div className="info-tooltip">
           Clique em um lote para ver detalhes na caixa lateral.<br/><br/>
-          Clique com o botão direito do mouse e arraste no mapa para mudar a visualização.<br/><br/>
+          Clique com o botão direito do mouse e arraste para mudar a visualização.<br/><br/>
           Clique com o botão esquerdo do mouse e arraste para navegar pelo mapa.<br/><br/>
           Use a roda do mouse para dar zoom in e zoom out no mapa.
         </div>

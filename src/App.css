@@ -1,6 +1,6 @@
 .app-container {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 150px 1fr;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -8,5 +8,25 @@
 }
 
 .app-container.pesquisa-open {
-  grid-template-columns: 200px 280px 1fr;
+  grid-template-columns: 150px 280px 1fr;
+}
+
+.btn-site-epura {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #490108;
+  color: #f5f5f5;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  z-index: 1002; /* Maior que o mapa, para ficar por cima */
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.btn-site-epura:hover {
+  background-color: #6d020c;
 }
